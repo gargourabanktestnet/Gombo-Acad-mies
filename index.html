@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gombo Académies - Plateforme Tout-en-Un</title>
+    <script src="https://tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+        body { -webkit-tap-highlight-color: transparent; font-family: system-ui, -apple-system, sans-serif; }
+        .tab-content { display: none; padding-bottom: 85px; }
+        .tab-content.active { display: block; animation: fadeIn 0.2s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 select-none">
+
+    <!-- EN-TÊTE -->
+    <header class="bg-emerald-700 text-white p-4 sticky top-0 z-40 shadow-md flex justify-between items-center">
+        <div>
+            <h1 class="text-xl font-bold tracking-tight"><i class="fas fa-seedling mr-2 text-yellow-300"></i>Gombo Académies</h1>
+            <p class="text-xs text-emerald-100">Apprendre • Acheter • Entreprendre</p>
+        </div>
+        <button onclick="openCart()" class="relative bg-emerald-800 p-2.5 rounded-full hover:bg-emerald-900">
+            <i class="fas fa-shopping-bag text-lg"></i>
+            <span id="cart-count" class="absolute -top-1 -right-1 bg-yellow-400 text-emerald-950 text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
+        </button>
+    </header>
+
+    <!-- CONTENU PRINCIPAL -->
+    <main class="max-w-md mx-auto p-4">
+
+        <!-- 1. ONGLET ACADÉMIE (Contenu Éducatif) -->
+        <section id="tab-academie" class="tab-content active space-y-4">
+            <div class="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-xl p-4 text-white shadow">
+                <span class="bg-yellow-400 text-emerald-950 text-xs font-bold px-2 py-0.5 rounded uppercase">Nouveau</span>
+                <h2 class="text-lg font-bold mt-1">Maîtriser le Commerce Mobile</h2>
+                <p class="text-sm text-emerald-100 mt-1">Apprenez à vendre vos produits et services efficacement au Tchad.</p>
+                <button onclick="triggerMobileMoney('Formation Complète Commerce', 2500)" class="mt-3 bg-white text-emerald-800 font-bold text-sm px-4 py-2 rounded-lg shadow active:scale-95 transition">
+                    Débloquer (2 500 FCFA)
+                </button>
+            </div>
+
+            <h3 class="font-bold text-gray-700 text-base">Modules disponibles</h3>
+            
+            <div class="bg-white p-3.5 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center">
+                <div>
+                    <span class="text-xs text-emerald-600 font-semibold">Gratuit • 5 min</span>
+                    <h4 class="font-bold text-sm">1. Créer son offre irrésistible</h4>
+                    <p class="text-xs text-gray-500">Les bases pour attirer les premiers clients.</p>
+                </div>
+                <button onclick="alert('Ouverture du cours gratuit...')" class="bg-emerald-100 text-emerald-700 p-2.5 rounded-lg">
+                    <i class="fas fa-play"></i>
+                </button>
+            </div>
+
+            <div class="bg-white p-3.5 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center">
+                <div>
+                    <span class="text-xs text-amber-600 font-semibold"><i class="fas fa-lock mr-1"></i>VIP • 1 500 FCFA</span>
+                    <h4 class="font-bold text-sm">2. Publicité Facebook & WhatsApp</h4>
+                    <p class="text-xs text-gray-500">Cibler les acheteurs à N'Djamena et en province.</p>
+                </div>
+                <button onclick="triggerMobileMoney('Module Publicité WhatsApp', 1500)" class="bg-amber-100 text-amber-700 p-2.5 rounded-lg">
+                    <i class="fas fa-unlock-alt"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 2. ONGLET BOUTIQUE (E-commerce) -->
+        <section id="tab-boutique" class="tab-content space-y-4">
+            <div class="flex justify-between items-center">
+                <h2 class="text-lg font-bold text-gray-800">Boutique Gombo</h2>
+                <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded-full font-medium">Paiement Mobile Money</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3" id="product-list">
+                <!-- Produits générés par JS -->
+            </div>
+        </section>
+
+        <!-- 3. ONGLET SERVICES LOCAUX -->
+        <section id="tab-services" class="tab-content space-y-4">
+            <div class="flex justify-between items-center">
+                <h2 class="text-lg font-bold text-gray-800">Prestataires Locaux</h2>
+                <button onclick="triggerMobileMoney('Inscription Prestataire VIP (1 mois)', 2000)" class="text-xs bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg font-semibold">
+                    + Publier mon service
+                </button>
+            </div>
+
+            <input type="text" id="service-search" onkeyup="filterServices()" placeholder="Rechercher (ex: Plombier, Livreur, Graphiste)..." class="w-full p-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-emerald-600">
+
+            <div id="service-list" class="space-y-3">
+                <!-- Services générés par JS -->
+            </div>
+        </section>
+
+        <!-- 4. ONGLET OUTILS PRATIQUES -->
+        <section id="tab-outils" class="tab-content space-y-4">
+            <h2 class="text-lg font-bold text-gray-800">Outils du Commerçant</h2>
+            
+            <!-- Outil 1 : Calculateur de Marge & Prix de vente -->
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 space-y-3">
+                <h3 class="font-bold text-sm text-emerald-800"><i class="fas fa-calculator mr-2"></i>Calculateur de Bénéfice</h3>
+                <div>
+                    <label class="text-xs text-gray-500">Prix d'achat / Coût (FCFA)</label>
+                    <input type="number" id="calc-cost" placeholder="Ex: 5000" class="w-full p-2 border rounded-lg text-sm mt-1">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-500">Prix de vente prévu (FCFA)</label>
+                    <input type="number" id="calc-price" placeholder="Ex: 7500" class="w-full p-2 border rounded-lg text-sm mt-1">
+                </div>
+                <button onclick="calculateProfit()" class="w-full bg-emerald-700 text-white py-2 rounded-lg text-sm font-bold">Calculer ma marge</button>
+                <div id="calc-result" class="hidden p-2.5 bg-emerald-50 rounded-lg text-sm text-emerald-900 font-medium"></div>
+            </div>
+
+            <!-- Outil 2 : Générateur de Reçu WhatsApp -->
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 space-y-3">
+                <h3 class="font-bold text-sm text-emerald-800"><i class="fas fa-receipt mr-2"></i>Générateur de Reçu Client</h3>
+                <input type="text" id="rec-client" placeholder="Nom du client" class="w-full p-2 border rounded-lg text-sm">
+                <input type="text" id="rec-item" placeholder="Produit ou service vendu" class="w-full p-2 border rounded-lg text-sm">
+                <input type="number" id="rec-amount" placeholder="Montant payé (FCFA)" class="w-full p-2 border rounded-lg text-sm">
+                <button onclick="sendReceiptWhatsApp()" class="w-full bg-green-600 text-white py-2 rounded-lg text-sm font-bold flex items-center justify-center gap-2">
+                    <i class="fab fa-whatsapp text-lg"></i> Envoyer le reçu par WhatsApp
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- BARRE DE NAVIGATION INFÉRIEURE -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2 z-40 max-w-md mx-auto">
+        <button onclick="switchTab('academie', this)" class="nav-btn text-emerald-700 flex flex-col items-center text-xs font-semibold">
+            <i class="fas fa-graduation-cap text-lg mb-1"></i>Académie
+        </button>
+        <button onclick="switchTab('boutique', this)" class="nav-btn text-gray-400 flex flex-col items-center text-xs font-medium">
+            <i class="fas fa-store text-lg mb-1"></i>Boutique
+        </button>
+        <button onclick="switchTab('services', this)" class="nav-btn text-gray-400 flex flex-col items-center text-xs font-medium">
+            <i class="fas fa-handshake text-lg mb-1"></i>Services
+        </button>
+        <button onclick="switchTab('outils', this)" class="nav-btn text-gray-400 flex flex-col items-center text-xs font-medium">
+            <i class="fas fa-tools text-lg mb-1"></i>Outils
+        </button>
+    </nav>
+
+    <!-- MODALE PANIER -->
+    <div id="cart-modal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-end justify-center">
+        <div class="bg-white w-full max-w-md rounded-t-2xl p-4 space-y-4">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="font-bold text-lg">Votre Panier</h3>
+                <button onclick="closeCart()" class="text-gray-500 text-xl">&times;</button>
+            </div>
+            <div id="cart-items" class="space-y-2 max-h-60 overflow-y-auto text-sm"></div>
+            <div class="border-t pt-3 flex justify-between font-bold">
+                <span>Total à payer :</span>
+                <span id="cart-total">0 FCFA</span>
+            </div>
+            <button onclick="checkoutCart()" class="w-full bg-emerald-700 text-white py-3 rounded-xl font-bold shadow">
+                Payer via Mobile Money
+            </button>
+        </div>
+    </div>
+
+    <!-- MODALE PAIEMENT MOBILE MONEY -->
+    <div id="momo-modal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center p-4">
